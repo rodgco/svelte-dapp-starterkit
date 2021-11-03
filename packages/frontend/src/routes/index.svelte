@@ -99,7 +99,7 @@
 			{#if connected}
 				<form on:submit|preventDefault={setGreeting}>
 					<input type="text" placeholder="message" bind:value />
-					<button type="submit" class="waveButton">Wave at Me</button>
+					<button type="submit" class="waveButton">Change Greeting!</button>
 				</form>
 			{:else}
 				<button class="waveButton" on:click={connectWallet}>Connect Wallet</button>
