@@ -1,0 +1,25 @@
+{
+	"name": "svelte-dapp-starter-kit",
+	"version": "1.0.0",
+	"description": "",
+	"main": "",
+	"keywords": [
+		"sveltekit",
+		"svelte",
+		"dapp",
+		"hardhat",
+		"web3",
+		"starte-kit",
+		"template"
+	],
+	"author": "rodgco <r@rodg.co>",
+	"license": "ISC",
+	"scripts": {
+		"build": "pnpm recursive run build",
+		"clean": "pnpm recursive exec -- rm -rf node_modules; rm shrinkwrap.yaml; rm -rf node_modules",
+		"dev": "pnpm recursive run dev",
+		"server:start": "pnpm recursive run start --filter @beaver/server",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"web:start": "pnpm recursive run start --filter @beaver/web"
+	}
+}
