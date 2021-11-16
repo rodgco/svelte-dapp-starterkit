@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { ethers, providers } from 'ethers';
-	import { Foo } from 'svelthers';
 
 	import greeterStore from '$lib/GreeterStore';
 	import type { GreeterStore } from '$types';

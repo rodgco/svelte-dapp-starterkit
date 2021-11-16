@@ -18,6 +18,12 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 let networks = {};
 
+networks.localhost = {
+	url: "http://localhost:8545",
+};
+
+networks.hardhat = {};
+
 if (process.env.PRIVATE_KEY) {
 	networks.rinkeby = {
 		url: process.env.STAGING_ALCHEMY_KEY || "",
@@ -31,9 +37,6 @@ if (process.env.PRIVATE_KEY) {
 module.exports = {
 	solidity: "0.8.4",
 	networks,
-	paths: {
-		artifacts: "../frontend/src/lib/artifacts",
-	},
 	typechain: {
 		outDir: "../frontend/src/types/contracts",
 		target: "ethers-v5",
