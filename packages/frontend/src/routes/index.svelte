@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { ethers, providers } from 'ethers';
+	import { Foo } from 'svelthers';
 
 	import greeterStore from '$lib/GreeterStore';
 	import type { GreeterStore } from '$types';
@@ -80,6 +81,7 @@
 	}
 </script>
 
+<Foo msg="We're Live" />
 <div class="mainContainer">
 	<div class="dataContainer">
 		<div class="header">👋 Hey there!</div>

@@ -30,9 +30,9 @@ export default function (
 
 	async function setGreeting(signer: Signer, message: string) {
 		try {
-			const contract = new ethers.Contract(contractAddress, abi, signer) as Greeter;
+			const signerContract = contract.connect(signer) as Greeter;
 
-			const txn = await contract.setGreeting(message, { gasLimit: 300_000 });
+			const txn = await signerContract.setGreeting(message, { gasLimit: 300_000 });
 			console.log('Mining:', txn.hash);
 			await txn.wait();
 			console.log('Mined:', txn.hash);
