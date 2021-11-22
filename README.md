@@ -1,19 +1,15 @@
-# Svelte Dapp StarterKit 
+# FrontEnd
 
-This is my Svelte + Dapp StarterKit. 
+This is the SvelteKit based frontend, it's main function is to enable user interaction and dispatch transactions to the dapp.
 
-## Code Structure
+## Config
 
-This repository is a PNPM Workspace (aka Monorepo) with (initially) two packages:
+It has one configuration file (.env), a sample .env (.env.sample) is provided, please make a copy to .env and update the required date every time something changes.
 
-1. frontend - which hosts the SvelteKit app
-2. dapp - for the dapp (Solidity) code
+## Dapp Updates
 
-This was necessary as SvelteKit is an ESM project, and most of the tooling around dapp development are CommonJS so it's hard to keep both under the same `package.json` (at least I don't know how to do it).
+There are basically two updates that need to be reflected here when something change in the dapp:
 
-In the future new packages may be incorporated, as soon as we're finding opportunities 
+1. Contract address must be updated at .env file.
+2. Artifacts must be copied to lib folder.
 
-## Todo
-
-- [ ] Automate update contract address to the frontend
-- [ ] Stage contract address?

@@ -8,9 +8,9 @@ const fs = require("fs");
 const path = require("path");
 
 const abiSrcFolder = "./artifacts/contracts";
-const abiDestFolder = "../frontend/src/lib/abis";
+const abiDestFolder = "../src/lib/abis";
 
-const envFile = "../frontend/.env";
+const envFile = "../.env";
 const addressKey = "VITE_CONTRACT_ADDRESS";
 
 async function main() {

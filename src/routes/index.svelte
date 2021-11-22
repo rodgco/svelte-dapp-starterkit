@@ -80,7 +80,6 @@
 	}
 </script>
 
-<Foo msg="We're Live" />
 <div class="mainContainer">
 	<div class="dataContainer">
 		<div class="header">👋 Hey there!</div>
