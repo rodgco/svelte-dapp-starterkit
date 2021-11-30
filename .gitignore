@@ -5,3 +5,6 @@ build/
 package/
 
 .vercel_build_output/
+*.swp
+pnpm-debug.log
+.env

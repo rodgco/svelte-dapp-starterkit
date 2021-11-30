@@ -16,6 +16,8 @@
 
 	let value: string = '';
 
+	$: chainId = ethereum?.chainId || 'Nothing';
+
 	onMount(async () => {
 		/*
 		 * First make sure we have access to window.ethereum
@@ -85,8 +87,8 @@
 		<div class="header">👋 Hey there!</div>
 
 		<div class="bio">
-			I am <a href="https://twitter.com/rodg_co">rodgco</a> and I'm learning to develop web3 apps, that's
-			pretty cool right? Connect your Ethereum wallet and greet!
+			I am <a href="https://twitter.com/rodg_co">rodgco</a> and I'm learning to develop web3 apps,
+			that's pretty cool right? Connect your Ethereum wallet and greet! And we're connected to {chainId}.
 		</div>
 
 		{#if !ethereum}

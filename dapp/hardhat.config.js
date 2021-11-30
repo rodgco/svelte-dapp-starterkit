@@ -24,14 +24,12 @@ networks.localhost = {
 
 networks.hardhat = {};
 
-if (process.env.PRIVATE_KEY) {
-	networks.remote = {
-		url: process.env.STAGING_ALCHEMY_KEY || '',
-		accounts: [process.env.PRIVATE_KEY || ''],
-		gas: 6000000, // Gas sent with each transaction (default: ~6700000)
-		gasPrice: 3000000000 // 3 gwei (in wei) (default: 100 gwei)
-	};
-}
+networks.remote = {
+	url: process.env.STAGING_ALCHEMY_KEY || '',
+	accounts: [process.env.PRIVATE_KEY || ''],
+	gas: 6000000, // Gas sent with each transaction (default: ~6700000)
+	gasPrice: 3000000000 // 3 gwei (in wei) (default: 100 gwei)
+};
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -39,6 +37,9 @@ if (process.env.PRIVATE_KEY) {
 module.exports = {
 	solidity: '0.8.4',
 	networks,
+	paths: {
+		artifacts: '../src/artifacts'
+	},
 	typechain: {
 		outDir: '../src/types/contracts',
 		target: 'ethers-v5',

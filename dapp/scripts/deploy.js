@@ -3,15 +3,10 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
-const hre = require("hardhat");
-const fs = require("fs");
-const path = require("path");
+const hre = require('hardhat');
+const fs = require('fs');
 
-const abiSrcFolder = "./artifacts/contracts";
-const abiDestFolder = "../src/lib/abis";
-
-const envFile = "../.env";
-const addressKey = "VITE_CONTRACT_ADDRESS";
+const { env, contracts } = require('../rodgco.config');
 
 async function main() {
 	// Hardhat always runs the compile task when running scripts with its command
@@ -21,44 +16,50 @@ async function main() {
 	// manually to make sure everything is compiled
 	// await hre.run('compile');
 
-	// We get the contract to deploy
-	const Greeter = await hre.ethers.getContractFactory("Greeter");
-	const greeter = await Greeter.deploy("Hello, Hardhat!");
+	console.log('Contracts', contracts);
+	contracts.forEach(async (contractSpec) => {
+		console.log('Working on', contractSpec.name);
+		// try {
+		const contractFactory = await hre.ethers.getContractFactory(contractSpec.name);
 
-	await greeter.deployed();
+		console.log('Deploying...', contractSpec.name, contractSpec.deployArgs);
+		const contract = contractSpec.deployArgs
+			? await contractFactory.deploy(contractSpec.deployArgs)
+			: await contractFactory.deploy();
+		await contract.deployed();
 
-	// Copy abi to frontend
-	try {
-		const entries = fs.readdirSync(abiSrcFolder);
+		console.log('Contract deployed to:', contract.address);
+		if (contractSpec.env) {
+			updateEnv(contractSpec.env.key, contract[contractSpec.env.value]);
+		}
+		// } catch (error) {
+		// 	console.log('Error ===>', error);
+		// }
+	});
+}
 
-		entries.forEach((entry) => {
-			console.log("Copying ABI to frontend:", entry);
-			const contract = entry.split(".")[0];
-
-			fs.copyFileSync(
-				`${abiSrcFolder}${path.sep}${entry}${path.sep}${contract}.json`,
-				`${abiDestFolder}${path.sep}${contract}.json`
-			);
-		});
-	} catch (err) {
-		console.log(err);
-	}
-
+function updateEnv(key, value) {
 	// Update frontend .env with contract address
-	console.log("Greeter deployed to:", greeter.address);
 	try {
-		const currentEnv = fs.readFileSync(envFile);
+		const currentEnv = fs.readFileSync(env);
+
+		let changed = false;
 
 		const newEnv = currentEnv
 			.toString()
-			.split("\n")
+			.split('\n')
 			.map((line) => {
-				const [key, ..._value] = line.split("=");
-				if (key === addressKey) return `${addressKey}=${greeter.address}`;
+				const [_key, ..._value] = line.split('=');
+				if (_key === key) {
+					changed = true;
+					return `${key}=${value}`;
+				}
 				return line;
 			});
 
-		fs.writeFileSync(envFile, new Buffer.from(newEnv.join("\n")));
+		if (!changed) newEnv.push(`${key}=${value}`);
+
+		fs.writeFileSync(env, new Buffer.from(newEnv.join('\n')));
 	} catch (err) {
 		console.log(err);
 	}
@@ -66,9 +67,9 @@ async function main() {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main()
-	.then(() => process.exit(0))
-	.catch((error) => {
-		console.error(error);
-		process.exit(1);
-	});
+main();
+//	.then(() => process.exit(0))
+//	.catch((error) => {
+//		console.error(error);
+//		process.exit(1);
+//	});
