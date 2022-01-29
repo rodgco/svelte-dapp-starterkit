@@ -31,8 +31,8 @@
 					gasLimit: 300_000
 				});
 				console.log('Mining:', txn.hash);
-				await txn.wait();
-				console.log('Mined:', txn.hash);
+				/* await txn.wait(); */
+				/* console.log('Mined:', txn.hash); */
 
 				value = '';
 			} else {
