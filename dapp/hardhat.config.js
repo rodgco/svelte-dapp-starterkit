@@ -24,12 +24,12 @@ networks.localhost = {
 
 networks.hardhat = {};
 
-// networks.remote = {
-// 	url: process.env.STAGING_URL || '',
-// 	accounts: [process.env.PRIVATE_KEY || ''],
-// 	gas: 6000000, // Gas sent with each transaction (default: ~6700000)
-// 	gasPrice: 3000000000 // 3 gwei (in wei) (default: 100 gwei)
-// };
+networks.remote = {
+	url: process.env.STAGING_URL || '',
+	accounts: [process.env.PRIVATE_KEY || ''],
+	gas: 6000000, // Gas sent with each transaction (default: ~6700000)
+	gasPrice: 3000000000 // 3 gwei (in wei) (default: 100 gwei)
+};
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
