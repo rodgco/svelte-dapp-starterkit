@@ -12,11 +12,12 @@ import {
   Signer,
   utils,
 } from "ethers";
-import { FunctionFragment, Result } from "@ethersproject/abi";
+import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
 export interface GreeterInterface extends utils.Interface {
+  contractName: "Greeter";
   functions: {
     "greet()": FunctionFragment;
     "setGreeting(string)": FunctionFragment;
@@ -31,10 +32,19 @@ export interface GreeterInterface extends utils.Interface {
     data: BytesLike
   ): Result;
 
-  events: {};
+  events: {
+    "Greet(string)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Greet"): EventFragment;
 }
 
+export type GreetEvent = TypedEvent<[string], { message: string }>;
+
+export type GreetEventFilter = TypedEventFilter<GreetEvent>;
+
 export interface Greeter extends BaseContract {
+  contractName: "Greeter";
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -82,7 +92,10 @@ export interface Greeter extends BaseContract {
     setGreeting(_greeting: string, overrides?: CallOverrides): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "Greet(string)"(message?: null): GreetEventFilter;
+    Greet(message?: null): GreetEventFilter;
+  };
 
   estimateGas: {
     greet(overrides?: CallOverrides): Promise<BigNumber>;

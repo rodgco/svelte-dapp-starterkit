@@ -1,5 +1,5 @@
 /// <reference types="@sveltejs/kit" />
 
-interface EthereumWindow extends Window {
+declare interface Window {
 	ethereum: providers.ExternalProvider;
 }

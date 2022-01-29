@@ -1,110 +1,73 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { ethers, providers } from 'ethers';
+	import { ethers } from 'ethers';
 
-	import greeterStore from '$lib/GreeterStore';
-	import type { GreeterStore } from '$types';
+	import wallet from '$lib/wallet';
+	import type { Greeter } from '$types/contracts';
+
+	import Header from './_header.svelte';
 
 	const contractAddress = <string>import.meta.env.VITE_CONTRACT_ADDRESS;
+	import { abi } from '$artifacts/contracts/Greeter.sol/Greeter.json';
 
-	let ethereum: providers.ExternalProvider;
-	let provider: providers.Web3Provider;
-
-	let greeter: GreeterStore<string>;
-
-	let connected: boolean = false;
+	let greeter: Greeter;
 
 	let value: string = '';
 
-	$: chainId = ethereum?.chainId || 'Nothing';
+	$: if ($wallet.active) initWallet();
 
-	onMount(async () => {
-		/*
-		 * First make sure we have access to window.ethereum
-		 */
-		try {
-			({ ethereum } = <EthereumWindow>(<unknown>window));
-			if (!ethereum) return;
+	async function initWallet() {
+		wallet.setProvider(new ethers.providers.Web3Provider(window?.ethereum));
+		greeter = <Greeter>wallet.addContract(contractAddress, abi);
 
-			provider = new ethers.providers.Web3Provider(ethereum);
-			greeter = greeterStore(provider, contractAddress);
+		greeter.on('Greet', (message: string) => (value = message));
 
-			/*
-			 * Check if we're authorized to access the user's wallet
-			 */
-			const accounts = await ethereum.request({ method: 'eth_accounts' });
-			if (accounts.length !== 0) {
-				connected = true;
-			} else {
-				console.log('No authorized account found');
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	});
-
-	async function connectWallet() {
-		try {
-			if (!ethereum) return;
-
-			await ethereum.request({ method: 'eth_requestAccounts' });
-			connected = true;
-		} catch (error) {
-			console.log(error);
-		}
-	}
-
-	async function greet() {
-		try {
-			if (ethereum) {
-				greeter.greet();
-			} else {
-				console.log("Ethereum object doesn't exist!");
-			}
-		} catch (error) {
-			console.log('---', error.message);
-		}
+		value = await greeter.greet();
 	}
 
 	async function setGreeting() {
 		try {
-			if (ethereum) {
-				const signer = provider.getSigner();
+			if ($wallet.connected) {
+				const txn = await greeter.connect(wallet.getSigner()).setGreeting(value, {
+					gasLimit: 300_000
+				});
+				console.log('Mining:', txn.hash);
+				await txn.wait();
+				console.log('Mined:', txn.hash);
 
-				greeter.setGreeting(signer, value);
 				value = '';
 			} else {
 				console.log("Ethereum object doesn't exist!");
 			}
 		} catch (error) {
-			console.log('---', error.message);
+			console.log('---', error);
 		}
 	}
 </script>
 
+<Header />
 <div class="mainContainer">
 	<div class="dataContainer">
 		<div class="header">👋 Hey there!</div>
 
 		<div class="bio">
-			I am <a href="https://twitter.com/rodg_co">rodgco</a> and I'm learning to develop web3 apps,
-			that's pretty cool right? Connect your Ethereum wallet and greet! And we're connected to {chainId}.
+			I am <a href="https://twitter.com/rodg_co">rodgco</a> and I'm learning to develop web3 apps, that's
+			pretty cool right? Connect your Ethereum wallet and greet!
 		</div>
 
-		{#if !ethereum}
+		{#if !$wallet.active}
 			<div class="warning">
 				You need a wallet to use this app! Try <a href="https://metamask.io">Metamask</a>.
 			</div>
 		{:else}
-			<div class="bio">{$greeter}</div>
+			<div class="bio">{value}</div>
 
-			{#if connected}
+			{#if $wallet.connected}
 				<form on:submit|preventDefault={setGreeting}>
 					<input type="text" placeholder="message" bind:value />
 					<button type="submit" class="waveButton">Change Greeting!</button>
 				</form>
 			{:else}
-				<button class="waveButton" on:click={connectWallet}>Connect Wallet</button>
+				<button class="waveButton" on:click={() => wallet.connect()}>Connect Wallet</button>
 			{/if}
 		{/if}
 	</div>

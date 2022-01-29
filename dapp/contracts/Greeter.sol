@@ -11,6 +11,8 @@ contract Greeter {
         greeting = _greeting;
     }
 
+		event Greet(string message);
+
     function greet() public view returns (string memory) {
         return greeting;
     }
@@ -18,5 +20,6 @@ contract Greeter {
     function setGreeting(string memory _greeting) public {
         console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
         greeting = _greeting;
+				emit Greet(_greeting);
     }
 }
