@@ -11,7 +11,7 @@
 		<div>{$wallet.account.slice(0, 6)}...{$wallet.account.slice(-4)}</div>
 		<div>{$wallet.chain_id}</div>
 		{#if $wallet.chain_id != '0x89'}
-			<button on:click={() => wallet.changeNetwork('polygon')}>Change to Polygon</button>
+			<button on:click={() => wallet.changeNetwork('mumbai')}>Change to Polygon</button>
 		{/if}
 	{/if}
 </header>
