@@ -1,17 +1,17 @@
 <script>
-	import wallet from '$lib/wallet';
+	import greeter from '$lib/greeter';
 </script>
 
 <header>
-	{#if !$wallet.active}
+	{#if !$greeter.active}
 		<p>You need a Wallet!</p>
-	{:else if !$wallet.connected}
-		<button on:click={() => wallet.connect()}>Connect Wallet</button>
+	{:else if !$greeter.connected}
+		<button on:click={() => greeter.connect()}>Connect Wallet</button>
 	{:else}
-		<div>{$wallet.account.slice(0, 6)}...{$wallet.account.slice(-4)}</div>
-		<div>{$wallet.chain_id}</div>
-		{#if $wallet.chain_id != '0x89'}
-			<button on:click={() => wallet.changeNetwork('mumbai')}>Change to Polygon</button>
+		<div>{$greeter.account.slice(0, 6)}...{$greeter.account.slice(-4)}</div>
+		<div>{$greeter.chain_id}</div>
+		{#if $greeter.chain_id != '0x13881'}
+			<button on:click={() => greeter.changeNetwork('mumbai')}>Change to Polygon</button>
 		{/if}
 	{/if}
 </header>

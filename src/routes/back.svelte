@@ -1,17 +1,11 @@
-<script context="module">
-	export const hydrate = false;
-	import { ethers } from 'ethers';
+<script context="module" lang="ts">
+	export const prerender = true;
 
-	const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
-	import { abi } from '$artifacts/contracts/Greeter.sol/Greeter.json';
+	import greeter from '$lib/greeter';
+	import { onDestroy, onMount } from 'svelte';
 
 	export async function load() {
-		const provider = new ethers.providers.JsonRpcProvider(
-			'https://matic-mumbai.chainstacklabs.com',
-			80001
-		);
-		const contract = new ethers.Contract(contractAddress, abi, provider);
-		const greeting = await contract.greet();
+		const greeting = await greeter.greet();
 		return {
 			props: {
 				greeting
@@ -20,8 +14,17 @@
 	}
 </script>
 
-<script>
+<script lang="ts">
 	export let greeting = '';
+
+	onMount(async () => {
+		await greeter.greet();
+		$greeter.contract.on('Greet', (message: string) => (greeting = message));
+	});
+
+	onDestroy(async () => {
+		$greeter.contract.removeAllListeners();
+	});
 </script>
 
 <h1>{greeting}</h1>

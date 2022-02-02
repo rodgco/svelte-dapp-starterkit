@@ -1,42 +1,34 @@
 <script lang="ts">
-	import { ethers } from 'ethers';
+	import { browser } from '$app/env';
 
-	import wallet from '$lib/wallet';
-	import type { Greeter } from '$types/contracts';
+	import greeter from '$lib/greeter';
+	import { onDestroy, onMount } from 'svelte';
 
 	import Header from './_header.svelte';
 
-	const contractAddress = <string>import.meta.env.VITE_CONTRACT_ADDRESS;
-	import { abi } from '$artifacts/contracts/Greeter.sol/Greeter.json';
-
-	let greeter: Greeter;
-
+	let greeting: string = '';
 	let value: string = '';
 
-	$: if ($wallet.active) initWallet();
+	onMount(async () => {
+		if (browser) {
+			greeting = await greeter.greet();
+			$greeter.contract.on('Greet', (message: string) => (greeting = message));
+		}
+	});
 
-	async function initWallet() {
-		wallet.setProvider(new ethers.providers.Web3Provider(window?.ethereum));
-		greeter = <Greeter>wallet.addContract(contractAddress, abi);
-
-		greeter.on('Greet', (message: string) => (value = message));
-
-		value = await greeter.greet();
-	}
+	onDestroy(async () => {
+		if (browser) $greeter.contract.removeAllListeners();
+	});
 
 	async function setGreeting() {
 		try {
-			if ($wallet.connected) {
-				const txn = await greeter.connect(wallet.getSigner()).setGreeting(value, {
+			if ($greeter.connected) {
+				const signer = $greeter.signer;
+				const txn = await $greeter.contract.connect(signer).setGreeting(value, {
 					gasLimit: 300_000
 				});
 				console.log('Mining:', txn.hash);
-				/* await txn.wait(); */
-				/* console.log('Mined:', txn.hash); */
-
 				value = '';
-			} else {
-				console.log("Ethereum object doesn't exist!");
 			}
 		} catch (error) {
 			console.log('---', error);
@@ -54,21 +46,18 @@
 			pretty cool right? Connect your Ethereum wallet and greet!
 		</div>
 
-		{#if !$wallet.active}
+		<div class="greeting">{greeting}</div>
+		{#if $greeter.connected}
+			<form on:submit|preventDefault={setGreeting}>
+				<input type="text" placeholder="message" bind:value />
+				<button type="submit" class="waveButton">Change Greeting!</button>
+			</form>
+		{:else if $greeter.active}
+			<button class="waveButton" on:click={() => greeter.connect()}>Connect Wallet</button>
+		{:else}
 			<div class="warning">
 				You need a wallet to use this app! Try <a href="https://metamask.io">Metamask</a>.
 			</div>
-		{:else}
-			<div class="bio">{value}</div>
-
-			{#if $wallet.connected}
-				<form on:submit|preventDefault={setGreeting}>
-					<input type="text" placeholder="message" bind:value />
-					<button type="submit" class="waveButton">Change Greeting!</button>
-				</form>
-			{:else}
-				<button class="waveButton" on:click={() => wallet.connect()}>Connect Wallet</button>
-			{/if}
 		{/if}
 	</div>
 </div>
@@ -110,6 +99,14 @@
 		text-align: center;
 		color: gray;
 		margin-top: 16px;
+	}
+
+	.greeting {
+		text-align: center;
+		color: blue;
+		margin-top: 16px;
+		font-size: large;
+		font-weight: bolder;
 	}
 
 	.warning {
