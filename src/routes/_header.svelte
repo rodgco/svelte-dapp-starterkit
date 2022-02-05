@@ -3,15 +3,15 @@
 </script>
 
 <header>
-	{#if !$greeter.active}
+	{#if !$greeter.connected}
 		<p>You need a Wallet!</p>
-	{:else if !$greeter.connected}
+	{:else if !$greeter.currentAccount}
 		<button on:click={() => greeter.connect()}>Connect Wallet</button>
 	{:else}
-		<div>{$greeter.account.slice(0, 6)}...{$greeter.account.slice(-4)}</div>
-		<div>{$greeter.chain_id}</div>
-		{#if $greeter.chain_id != '0x13881'}
-			<button on:click={() => greeter.changeNetwork('mumbai')}>Change to Polygon</button>
+		<div>{$greeter.currentAccount.slice(0, 6)}...{$greeter.currentAccount.slice(-4)}</div>
+		<div>{$greeter.chainId}</div>
+		{#if $greeter.chainId != '0x13881'}
+			<button on:click={() => greeter.changeNetwork('0x13881')}>Change to Polygon</button>
 		{/if}
 	{/if}
 </header>

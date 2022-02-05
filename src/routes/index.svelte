@@ -6,30 +6,16 @@
 
 	import Header from './_header.svelte';
 
-	let greeting: string = '';
 	let value: string = '';
 
 	onMount(async () => {
-		if (browser) {
-			greeting = await greeter.greet();
-			$greeter.contract.on('Greet', (message: string) => (greeting = message));
-		}
+		await greeter.greet();
 	});
 
-	onDestroy(async () => {
-		if (browser) $greeter.contract.removeAllListeners();
-	});
-
-	async function setGreeting() {
+	function setGreeting() {
 		try {
-			if ($greeter.connected) {
-				const signer = $greeter.signer;
-				const txn = await $greeter.contract.connect(signer).setGreeting(value, {
-					gasLimit: 300_000
-				});
-				console.log('Mining:', txn.hash);
-				value = '';
-			}
+			greeter.setGreeting(value);
+			value = '';
 		} catch (error) {
 			console.log('---', error);
 		}
@@ -46,13 +32,13 @@
 			pretty cool right? Connect your Ethereum wallet and greet!
 		</div>
 
-		<div class="greeting">{greeting}</div>
-		{#if $greeter.connected}
+		<div class="greeting">{$greeter.greet}</div>
+		{#if $greeter.currentAccount}
 			<form on:submit|preventDefault={setGreeting}>
 				<input type="text" placeholder="message" bind:value />
 				<button type="submit" class="waveButton">Change Greeting!</button>
 			</form>
-		{:else if $greeter.active}
+		{:else if $greeter.connected}
 			<button class="waveButton" on:click={() => greeter.connect()}>Connect Wallet</button>
 		{:else}
 			<div class="warning">
