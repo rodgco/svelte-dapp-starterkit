@@ -8,8 +8,17 @@
 
 	let value: string = '';
 
+	$: if ($greeter.correctChain && $greeter.currentAccount && $greeter.greet === '') {
+		greeter.greet();
+	}
+
+	$: console.log($greeter);
 	onMount(async () => {
-		await greeter.greet();
+		console.log('Greeter  store', $greeter);
+
+		/* if ($greeter.correctChain) { */
+		/* 	await greeter.greet(); */
+		/* } */
 	});
 
 	function setGreeting() {

@@ -7,11 +7,10 @@ import type { Readable, Writable, Subscriber, Unsubscriber } from 'svelte/store'
 import networks from '$lib/networks.json';
 
 interface IContractState {
-	isWeb3: boolean;
-	connected: boolean;
+	hasWallet: boolean;
+	correctChain: boolean;
 	chainId: string;
 	currentAccount: string;
-	onCorrectChain: boolean;
 }
 
 interface IOptions {
@@ -55,7 +54,7 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 			this.state.update((current) => ({
 				...current,
 				chainId,
-				connected: chainId === this.network.chainId
+				correctChain: chainId === this.network.chainId
 			}));
 			console.log('Chain ID changed:', chainId);
 		};
@@ -74,40 +73,40 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 		this.options = options;
 
 		/**
-		 *         _
-		 *     ___| |_ ___  _ __ ___
-		 *    / __| __/ _ \| '__/ _ \
-		 *    \__ \ || (_) | | |  __/
-		 *    |___/\__\___/|_|  \___|
+		 *      _
+		 *  ___| |_ ___  _ __ ___
+		 * / __| __/ _ \| '__/ _ \
+		 * \__ \ || (_) | | |  __/
+		 * |___/\__\___/|_|  \___|
 		 *
 		 */
 		this.state = writable({
 			...initialState,
-			isWeb3: false,
-			connected: false,
+			hasWallet: false,
+			correctChain: false,
 			chainId: null,
-			currentAccount: null,
-			onCorrectChain: false
+			currentAccount: null
 		});
 		this.subscribe = this.state.subscribe; // Class "implements store" hack!
 
 		/**
-		 *   ____                 _     _
-		 *  |  _ \ _ __ _____   _(_) __| | ___ _ __ ___
-		 *  | |_) | '__/ _ \ \ / / |/ _` |/ _ \ '__/ __|
-		 *  |  __/| | | (_) \ V /| | (_| |  __/ |  \__ \
-		 *  |_|   |_|  \___/ \_/ |_|\__,_|\___|_|  |___/
-		 *
+		 *                        _     _
+		 *   _ __  _ __ _____   _(_) __| | ___ _ __ ___
+		 *  | '_ \| '__/ _ \ \ / / |/ _` |/ _ \ '__/ __|
+		 *  | |_) | | | (_) \ V /| | (_| |  __/ |  \__ \
+		 *  | .__/|_|  \___/ \_/ |_|\__,_|\___|_|  |___/
+		 *  |_|
 		 */
 		if (browser && window.ethereum) {
-			this.state.update((current) => ({ ...current, isWeb3: true }));
-			this.provider = new ethers.providers.Web3Provider(
-				window.ethereum,
-				options.forceChain ? parseInt(this.network.chainId, 16) : null
-			);
+			// Web3 Provider
+			this.state.update((current) => ({ ...current, hasWallet: true }));
+			this.provider = new ethers.providers.Web3Provider(window.ethereum);
 			this.signer = this.provider.getSigner();
 
 			window.ethereum.request({ method: 'eth_chainId' }).then((id: string) => {
+				if (options.forceChain) {
+					this.changeNetwork(this.network);
+				}
 				handleChainChanged(id);
 			});
 			window.ethereum.on('chainChanged', handleChainChanged);
@@ -117,6 +116,7 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 				.then((accounts: string[]) => handleAccountsChanged(accounts));
 			window.ethereum.on('accountsChanged', handleAccountsChanged);
 		} else {
+			// JsonRpcProvider
 			this.provider = <ethers.providers.JsonRpcProvider>(
 				ethers.getDefaultProvider(this.network.rpcUrls[0])
 			);
@@ -146,11 +146,15 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 		}
 	}
 
-	async changeNetwork(network: INetwork | string) {
+	async changeNetwork(network: INetwork | string | 'default' = 'default') {
 		try {
 			if (!browser && !window.ethereum) throw new Error('No crypto wallet found');
 			const net =
-				typeof network === 'string' ? networks.find((item) => item.chainId === network) : network;
+				typeof network === 'string'
+					? network === 'default'
+						? this.network
+						: networks.find((item) => item.chainId === network)
+					: network;
 			await window.ethereum.request({
 				method: 'wallet_addEthereumChain',
 				params: [
