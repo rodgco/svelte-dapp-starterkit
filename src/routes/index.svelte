@@ -1,9 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/env';
-
 	import greeter from '$lib/greeter';
-	import { onDestroy, onMount } from 'svelte';
-
 	import Header from './_header.svelte';
 
 	let value: string = '';
@@ -13,13 +9,6 @@
 	}
 
 	$: console.log($greeter);
-	onMount(async () => {
-		console.log('Greeter  store', $greeter);
-
-		/* if ($greeter.correctChain) { */
-		/* 	await greeter.greet(); */
-		/* } */
-	});
 
 	function setGreeting() {
 		try {
@@ -47,7 +36,7 @@
 				<input type="text" placeholder="message" bind:value />
 				<button type="submit" class="waveButton">Change Greeting!</button>
 			</form>
-		{:else if $greeter.connected}
+		{:else if !$greeter.currentAccount}
 			<button class="waveButton" on:click={() => greeter.connect()}>Connect Wallet</button>
 		{:else}
 			<div class="warning">

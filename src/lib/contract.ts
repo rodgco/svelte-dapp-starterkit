@@ -16,6 +16,7 @@ interface IContractState {
 interface IOptions {
 	forceChain?: boolean;
 	pollingInterval?: number;
+	reloadOnChainChage?: boolean;
 }
 
 interface INetwork {
@@ -36,7 +37,11 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 	protected contract: TContract;
 
 	protected state: Writable<TState & IContractState>;
-	protected options: IOptions = {};
+	protected options: IOptions = {
+		reloadOnChainChage: true,
+		forceChain: true,
+		pollingInterval: 4000
+	};
 
 	public subscribe: (
 		run: Subscriber<TState & IContractState>,
@@ -51,11 +56,16 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 		options: IOptions = {}
 	) {
 		const handleChainChanged = (chainId: string): void => {
-			this.state.update((current) => ({
-				...current,
-				chainId,
-				correctChain: chainId === this.network.chainId
-			}));
+			console.log('Options', this.options);
+			if (browser && this.options.reloadOnChainChage) {
+				// window.location.reload();
+			} else {
+				this.state.update((current) => ({
+					...current,
+					chainId,
+					correctChain: chainId === this.network.chainId
+				}));
+			}
 			console.log('Chain ID changed:', chainId);
 		};
 
@@ -70,7 +80,7 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 
 		this.network = networks.find((entry: any) => entry.chainName === networkName);
 
-		this.options = options;
+		this.options = { ...this.options, ...options };
 
 		/**
 		 *      _
