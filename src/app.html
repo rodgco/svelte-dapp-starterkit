@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" href="%svelte.assets%/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="theme-color" content="#000000" />
 		<meta name="description" content="Svelte Dapp Starter Kit" />
@@ -37,9 +37,12 @@
 		<meta property="twitter:title" content="Svelte Dapp Starter kit" />
 		<meta property="twitter:description" content="My Starter Kit for Svelte + Dapp projects." />
 		<meta property="twitter:image" content="https://svelte-dapp-starterkit.vercel.app/image.png" />
+		<script>
+			var module = {};
+		</script>
 		%svelte.head%
 	</head>
 	<body>
-		<div id="svelte">%svelte.body%</div>
+		<div>%svelte.body%</div>
 	</body>
 </html>
