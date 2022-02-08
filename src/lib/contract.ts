@@ -128,9 +128,9 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 		} else {
 			// JsonRpcProvider
 			this.provider = <ethers.providers.JsonRpcProvider>(
-				ethers.getDefaultProvider(this.network.rpcUrls[0])
+				ethers.getDefaultProvider(this.network?.rpcUrls[0])
 			);
-			handleChainChanged(this.network.chainId);
+			handleChainChanged(this.network?.chainId);
 		}
 
 		this.provider.pollingInterval = options.pollingInterval || 4000;
