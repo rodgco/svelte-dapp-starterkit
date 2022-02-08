@@ -79,7 +79,7 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 		};
 
 		this.network = networks.find((entry: any) => entry.chainName === networkName) || {
-			chainId: '0x0'
+			chainId: '0x1'
 		};
 
 		this.options = { ...this.options, ...options };
@@ -130,7 +130,7 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 		} else {
 			// JsonRpcProvider
 			this.provider = <ethers.providers.JsonRpcProvider>(
-				ethers.getDefaultProvider(this.network.rpcUrls ? this.network.rpcUrls[0] : '')
+				ethers.getDefaultProvider(this.network.rpcUrls ? this.network.rpcUrls[0] : null)
 			);
 			handleChainChanged(this.network.chainId);
 		}
