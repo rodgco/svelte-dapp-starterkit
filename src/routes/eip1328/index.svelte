@@ -17,9 +17,10 @@
 	export let url: string = '';
 
 	let canvas: HTMLCanvasElement;
+
 	let wcString = `wc:8a5e5bdc-a0e4-4702-ba63-8f1a5655744f@1?bridge=${encodeURIComponent(
 		url + '/bridge'
-	)}?key=teste`;
+	)}?key=41791102999c339c844880b23950704cc43aa840f3739e365323cda4dfa89e7a`;
 
 	onMount(() => {
 		console.log(wcString);
