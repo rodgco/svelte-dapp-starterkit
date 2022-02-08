@@ -78,7 +78,9 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 			}
 		};
 
-		this.network = networks.find((entry: any) => entry.chainName === networkName);
+		this.network = networks.find((entry: any) => entry.chainName === networkName) || {
+			chainId: '0x0'
+		};
 
 		this.options = { ...this.options, ...options };
 
@@ -128,9 +130,9 @@ export default class Contract<TContract extends ethers.BaseContract, TState>
 		} else {
 			// JsonRpcProvider
 			this.provider = <ethers.providers.JsonRpcProvider>(
-				ethers.getDefaultProvider(this.network?.rpcUrls[0])
+				ethers.getDefaultProvider(this.network.rpcUrls ? this.network.rpcUrls[0] : '')
 			);
-			handleChainChanged(this.network?.chainId);
+			handleChainChanged(this.network.chainId);
 		}
 
 		this.provider.pollingInterval = options.pollingInterval || 4000;
