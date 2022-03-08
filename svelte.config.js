@@ -17,6 +17,9 @@ const config = {
 				alias: {
 					$artifacts: path.resolve('./src/artifacts')
 				}
+			},
+			define: {
+				global: JSON.stringify({})
 			}
 		}
 	}
