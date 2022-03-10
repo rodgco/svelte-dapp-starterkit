@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Header from './components/_Header.svelte';
-	import Footer from './components/_Footer.svelte';
+	import Header from './_components/header.svelte';
+	import Footer from './_components/footer.svelte';
 </script>
 
 <div id="fauxBody">
