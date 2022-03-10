@@ -6,12 +6,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="theme-color" content="#000000" />
 		<meta name="description" content="Svelte Dapp Starter Kit" />
-		<link rel="apple-touch-icon" href="/logo192.png" />
+		<link rel="apple-touch-icon" href="%svelte.assets%/logo192.png" />
 		<!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-		<link rel="manifest" href="/manifest.json" />
+		<link rel="manifest" href="%svelte.assets%/manifest.json" />
 		<!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -29,17 +29,37 @@
 		<meta property="og:url" content="https://svelte-dapp-starterkit.vercel.com" />
 		<meta property="og:title" content="Svelte Dapp Starter Kit" />
 		<meta property="og:description" content="My Starter Kit for Svelte + Dapp projects." />
-		<meta property="og:image" content="https://svelte-dapp-starterkit.vercel.app/image.png" />
+		<meta property="og:image" content="%svelte.assets%/image.png" />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:url" content="https://svelte-dapp-starterkit.vercel.app" />
 		<meta property="twitter:title" content="Svelte Dapp Starter kit" />
 		<meta property="twitter:description" content="My Starter Kit for Svelte + Dapp projects." />
-		<meta property="twitter:image" content="https://svelte-dapp-starterkit.vercel.app/image.png" />
+		<meta property="twitter:image" content="%svelte.assets%/image.png" />
+
+		<link rel="stylesheet" media="screen" href="%svelte.assets%/app.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Rowdies:wght@400;700&display=swap"
+			media="screen,print"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+			media="screen,print"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+			media="screen,print"
+		/>
 		%svelte.head%
 	</head>
 	<body>
-		<div>%svelte.body%</div>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		%svelte.body%
 	</body>
 </html>

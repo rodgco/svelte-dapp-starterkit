@@ -1,6 +1,5 @@
 <script lang="ts">
 	import greeter from '$lib/greeter';
-	import Header from './_header.svelte';
 
 	let value: string = '';
 
@@ -20,7 +19,6 @@
 	}
 </script>
 
-<Header />
 <div class="mainContainer">
 	<div class="dataContainer">
 		<div class="header">👋 Hey there!</div>

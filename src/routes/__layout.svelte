@@ -1,15 +1,27 @@
-<slot />
+<script lang="ts">
+	import Header from './components/_Header.svelte';
+	import Footer from './components/_Footer.svelte';
+</script>
 
-<style global>
-	body {
-		margin: 0;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-			'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
+<div id="fauxBody">
+	<Header />
+	<main>
+		<slot />
+	</main>
+
+	<Footer />
+</div>
+
+<style>
+	#fauxBody {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		overflow: auto;
+		background: var(--color-main-bg);
+		color: var(--color-flowText);
 	}
-
-	code {
-		font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+	main {
+		background-color: var(--color-modal-bg);
 	}
 </style>
