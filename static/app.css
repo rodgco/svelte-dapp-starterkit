@@ -92,6 +92,9 @@ body {
 hr {
 	display: none;
 }
+pre {
+	overflow: auto;
+}
 body,
 button,
 input,

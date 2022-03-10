@@ -2,6 +2,8 @@
 	import { onMount } from 'svelte';
 	import greeter from '$lib/greeter';
 
+	import Contact from '../modals/_Contact.svelte';
+
 	let opener: HTMLElement;
 
 	onMount(() => {
@@ -37,6 +39,8 @@
 		</ul>
 	</nav>
 </header>
+
+<Contact />
 
 <style>
 	header {
