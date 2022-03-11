@@ -73,11 +73,6 @@
 	h1 {
 		font-size: 1.5em;
 	}
-	h1 img {
-		height: 1.5em;
-		vertical-align: text-bottom;
-		padding-right: 0.25em;
-	}
 	h1 ~ * {
 		flex-grow: 0;
 	}
@@ -193,7 +188,6 @@
 		padding: 0.5rem 1rem;
 		height: 2rem;
 	}
-
 	.info {
 		padding: 0.5rem 1rem;
 		background-color: skyblue;
