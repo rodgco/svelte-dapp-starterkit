@@ -11,7 +11,21 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
+		"svg": "$npm_execpath run svg:optimize && $npm_execpath run svg:to-path",
+		"svg:optimize": "svgo -f ./src/icons -o ./src/icons",
+		"svg:to-path": "svgtofont --sources ./src/icons --output ./static/fonts"
+	},
+	"svgtofont": {
+		"fontName": "fnt",
+		"website": false,
+		"outSVGReact": false,
+		"css": {
+			"include": "\\.(css)$",
+			"output": "./static",
+			"fileName": "fnt-icon",
+			"cssPath": "./fonts/"
+		}
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.21.1",
@@ -35,6 +49,8 @@
 		"svelte": "^3.47.0",
 		"svelte-check": "^2.7.0",
 		"svelte-preprocess": "^4.10.6",
+		"svgo": "^2.8.0",
+		"svgtofont": "^3.17.6",
 		"tslib": "^2.3.1",
 		"typescript": "^4.6.3",
 		"vitest": "^0.9.3",
