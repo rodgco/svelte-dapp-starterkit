@@ -1,0 +1,40 @@
+[32mtemplate:build: [0mcache hit, replaying output [2mb636ca0334f328fc[0m
+[32mtemplate:build: [0m
+[32mtemplate:build: [0m> template@0.0.1 build /home/rodrigo/dev/github/rodgco/svelte-dapp-starterkit/apps/web
+[32mtemplate:build: [0m> svelte-kit build
+[32mtemplate:build: [0m
+[32mtemplate:build: [0mvite v2.9.5 building for production...
+[32mtemplate:build: [0mtransforming...
+[32mtemplate:build: [0m✓ 190 modules transformed.
+[32mtemplate:build: [0mrendering chunks...
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/manifest.json                               1.64 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/pages/__layout.svelte-d084dcb3.js           10.30 KiB / gzip: 3.75 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/error.svelte-1c1dcccc.js                    1.56 KiB / gzip: 0.75 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/pages/index.svelte-c5307b21.js              3.49 KiB / gzip: 1.51 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/chunks/index-0320c314.js                    0.43 KiB / gzip: 0.31 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/chunks/index-bc3e6949.js                    7.28 KiB / gzip: 2.97 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/assets/pages/index.svelte-6d34bc6c.css      0.80 KiB / gzip: 0.33 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/assets/pages/__layout.svelte-f26ac525.css   7.29 KiB / gzip: 1.62 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/start-887926b1.js                           22.86 KiB / gzip: 8.56 KiB
+[32mtemplate:build: [0m.svelte-kit/output/client/_app/chunks/greeter-8434482e.js                  289.98 KiB / gzip: 84.84 KiB
+[32mtemplate:build: [0mvite v2.9.5 building SSR bundle for production...
+[32mtemplate:build: [0mtransforming...
+[32mtemplate:build: [0m✓ 26 modules transformed.
+[32mtemplate:build: [0mGenerated an empty chunk: "hooks"
+[32mtemplate:build: [0mrendering chunks...
+[32mtemplate:build: [0m.svelte-kit/output/server/manifest.json                       1.39 KiB
+[32mtemplate:build: [0m.svelte-kit/output/server/index.js                            77.85 KiB
+[32mtemplate:build: [0m.svelte-kit/output/server/entries/pages/__layout.svelte.js    11.98 KiB
+[32mtemplate:build: [0m.svelte-kit/output/server/entries/fallbacks/error.svelte.js   0.72 KiB
+[32mtemplate:build: [0m.svelte-kit/output/server/entries/pages/index.svelte.js       2.54 KiB
+[32mtemplate:build: [0m.svelte-kit/output/server/chunks/index-13d243a7.js            3.03 KiB
+[32mtemplate:build: [0m.svelte-kit/output/server/chunks/greeter-3e583da5.js          9.02 KiB
+[32mtemplate:build: [0m.svelte-kit/output/server/chunks/hooks-1c45ba0b.js            0.00 KiB
+[32mtemplate:build: [0mOptions { reloadOnChainChage: true, forceChain: true, pollingInterval: 4000 }
+[32mtemplate:build: [0mChain ID changed: 0x13881
+[32mtemplate:build: [0m
+[32mtemplate:build: [0mRun npm run preview to preview your production build locally.
+[32mtemplate:build: [0m
+[32mtemplate:build: [0m> Using @sveltejs/adapter-auto
+[32mtemplate:build: [0m  Could not detect a supported production environment. See https://kit.svelte.dev/docs/adapters to learn how to configure your app to run on the platform of your choosing
+[32mtemplate:build: [0m  ✔ done

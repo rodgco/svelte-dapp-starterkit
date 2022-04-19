@@ -1,0 +1,17 @@
+[35mgreeter:build: [0mcache hit, replaying output [2m854150d1acfd2070[0m
+[35mgreeter:build: [0m
+[35mgreeter:build: [0m> greeter@1.0.0 build /home/rodrigo/dev/github/rodgco/svelte-dapp-starterkit/dapps/greeter
+[35mgreeter:build: [0m> npm run clean && npm run compile
+[35mgreeter:build: [0m
+[35mgreeter:build: [0m
+[35mgreeter:build: [0m> greeter@1.0.0 clean
+[35mgreeter:build: [0m> npx hardhat clean
+[35mgreeter:build: [0m
+[35mgreeter:build: [0m
+[35mgreeter:build: [0m> greeter@1.0.0 compile
+[35mgreeter:build: [0m> npx hardhat compile
+[35mgreeter:build: [0m
+[35mgreeter:build: [0mGenerating typings for: 2 artifacts in dir: typechain-types for target: ethers-v5
+[35mgreeter:build: [0mSuccessfully generated 6 typings!
+[35mgreeter:build: [0mSuccessfully generated 4 typings for external artifacts!
+[35mgreeter:build: [0mCompiled 2 Solidity files successfully
