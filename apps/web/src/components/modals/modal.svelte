@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let id: string = 'modal';
 	export let showClose: boolean = true;
+	export let active: boolean = false;
 </script>
 
-<div {id} class="modal">
+<div {id} class="modal" class:active>
 	{#if showClose}
 		<!-- svelte-ignore a11y-missing-content a11y-invalid-attribute -->
 		<a href="#" class="modalClose" hidden />
@@ -14,7 +15,9 @@
 			<!-- svelte-ignore a11y-missing-content a11y-invalid-attribute -->
 			<a href="#" class="modalClose" hidden />
 		{/if}
-		<slot name="content" />
+		<div class="content">
+			<slot name="content" />
+		</div>
 		<footer>
 			<slot name="footer" />
 		</footer>
@@ -37,7 +40,8 @@
 		opacity: 0;
 		transition: left 0s 0.5s, opacity 0.5s;
 	}
-	.modal:target {
+	.modal:target,
+	.modal.active {
 		left: 0;
 		opacity: 1;
 		transition: left 0s, opacity 0.5s;
@@ -82,40 +86,14 @@
 		border-radius: var(--borderRadius-outer);
 		max-width: var(--maxWidth-modalForm);
 	}
-	.modal:target > div {
+	.modal:target > div,
+	.modal.active > div {
 		top: 0;
 	}
-	.modal > div > fieldset {
+	.modal > div > .content {
 		padding: var(--pad);
 	}
 	.modal > div > footer {
 		padding: 0 var(--pad) var(--pad);
-	}
-	.modal :global(input:not([type='checkbox']):not([type='radio'])),
-	.modal :global(textarea) {
-		width: 100%;
-		padding: 0.25em 0.5em;
-		margin: 0.25em 0 0.5em;
-		border: var(--border-hairline);
-		border-radius: var(--borderRadius-inner);
-	}
-	.modal :global(label) {
-		display: block;
-		text-indent: 0.5em;
-	}
-	.modal footer :global(button) {
-		display: inline-block;
-		padding: 0.5em 1em;
-		text-decoration: none;
-		background: var(--color-chrome-bg);
-		border: var(--border-hairline);
-		border-radius: var(--borderRadius-inner);
-		box-shadow: var(--shadow-button);
-		color: var(--color-flowText);
-		transition: transform 0.5s;
-	}
-	.modal footer :global(button:focus),
-	.modal footer :global(button:hover) {
-		transform: scale(1.2);
 	}
 </style>

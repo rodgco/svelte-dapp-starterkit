@@ -3,13 +3,13 @@
 	import { wallet } from '$lib/wallet';
 
 	import Contact from './modals/contact.svelte';
-	import Wrong from './modals/wrong_net.svelte';
-	import { goto } from '$app/navigation';
+	import Modal from './modals/modal.svelte';
 	import { browser } from '$app/env';
 
 	let opener: HTMLElement;
+	let wrongModal = false;
 
-	$: if (browser && !$wallet?.correctChain) goto('#wrong');
+	$: wrongModal = browser && !$wallet?.correctChain;
 	$: console.log('Correct chain?', $wallet.correctChain);
 
 	onMount(() => {
@@ -32,9 +32,6 @@
 			{$wallet.currentAccount.slice(0, 6)}...{$wallet.currentAccount.slice(-4)}
 		</div>
 		<div class="info">{$wallet.chainId}</div>
-		{#if !$wallet.correctChain}
-			<button class="action" on:click={() => wallet.changeNetwork()}>Change to Polygon</button>
-		{/if}
 	{/if}
 	<button type="button" id="mainMenuOpen" hidden bind:this={opener} />
 	<nav>
@@ -47,7 +44,16 @@
 </header>
 
 <Contact />
-<Wrong />
+
+<Modal showClose={false} active={wrongModal}>
+	<svelte:fragment slot="header">Wrong Network</svelte:fragment>
+	<svelte:fragment slot="content">
+		<p>Please change your network to Polygon.</p>
+	</svelte:fragment>
+	<svelte:fragment slot="footer">
+		<button on:click={() => wallet.changeNetwork('default')}>Change to Polygon</button>
+	</svelte:fragment>
+</Modal>
 
 <style>
 	header {
