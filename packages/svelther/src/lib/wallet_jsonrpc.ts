@@ -15,7 +15,6 @@ export default class JsonRpcWallet extends Wallet<ethers.providers.JsonRpcProvid
 			ethers.getDefaultProvider(this.network.rpcUrls ? this.network.rpcUrls[0] : undefined)
 		);
 
-		this.provider.listAccounts().then((accounts) => console.log(accounts));
 		this.signer = this.provider.getSigner();
 
 		this.state.update((current) => ({
