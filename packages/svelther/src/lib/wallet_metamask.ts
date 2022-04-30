@@ -43,8 +43,13 @@ export default class MetaMaskWallet extends Wallet<IProvider<MetaMaskInpageProvi
 		};
 
 		const handleAccountsChanged = (accounts: string[]): void => {
+			console.log('Changing accounts', accounts);
 			if (accounts.length === 0) {
 				console.log('Plase connect to an account.');
+				this.state.update((current) => ({
+					...current,
+					currentAccount: undefined
+				}));
 			} else if (accounts[0] !== get(this.state).currentAccount) {
 				this.state.update((current) => ({
 					...current,
@@ -77,7 +82,7 @@ export default class MetaMaskWallet extends Wallet<IProvider<MetaMaskInpageProvi
 		this.provider.provider
 			.request({ method: 'eth_accounts' })
 			.then((accounts: Maybe<unknown>) => handleAccountsChanged(<string[]>accounts));
-		this.provider.provider.on('accountsChanged', (...args: unknown[]) =>
+		this.provider.provider.on('accountsChanged', (args: unknown) =>
 			handleAccountsChanged(<string[]>args)
 		);
 	}

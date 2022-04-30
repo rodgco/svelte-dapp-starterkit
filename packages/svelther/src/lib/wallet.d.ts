@@ -5,7 +5,7 @@ interface IWalletState {
     hasWallet: boolean;
     correctChain: boolean;
     chainId: null | string;
-    currentAccount: null | string;
+    currentAccount: string | undefined;
 }
 export interface IOptions {
     forceChain?: boolean;
@@ -24,7 +24,7 @@ export interface INetwork {
     };
     rpcUrls?: string[];
 }
-export default abstract class Wallet<TWallet extends ethers.providers.BaseProvider> implements Readable<IWalletState> {
+export default abstract class Wallet<TWallet extends ethers.providers.Provider> implements Readable<IWalletState> {
     protected network: INetwork;
     abstract provider: TWallet;
     abstract signer: ethers.Signer | undefined;
@@ -34,7 +34,7 @@ export default abstract class Wallet<TWallet extends ethers.providers.BaseProvid
     constructor(networkName: string, options?: IOptions);
     connect(): void | boolean;
     abstract changeNetwork(network: INetwork | string | 'default'): void;
-    getContract<TContract extends ethers.BaseContract, TState>(contract: new (address: string, abi: ethers.ContractInterface, initialState: TState, provider: ethers.providers.BaseProvider | ethers.Signer) => Contract<TContract, TState>, address: string, abi: ethers.ContractInterface, initialState: TState): Contract<TContract, TState>;
+    getContract<TContract extends ethers.BaseContract, TState>(contract: new (address: string, abi: ethers.ContractInterface, initialState: TState, provider: ethers.providers.Provider | ethers.Signer) => Contract<TContract, TState>, address: string, abi: ethers.ContractInterface, initialState: TState): Contract<TContract, TState>;
 }
 export {};
 //# sourceMappingURL=wallet.d.ts.map

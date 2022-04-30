@@ -10,7 +10,7 @@ interface IWalletState {
 	hasWallet: boolean;
 	correctChain: boolean;
 	chainId: null | string;
-	currentAccount: null | string;
+	currentAccount: string | undefined;
 }
 
 export interface IOptions {
@@ -28,7 +28,7 @@ export interface INetwork {
 	rpcUrls?: string[];
 }
 
-export default abstract class Wallet<TWallet extends ethers.providers.BaseProvider>
+export default abstract class Wallet<TWallet extends ethers.providers.Provider>
 	implements Readable<IWalletState>
 {
 	protected network: INetwork = { chainId: '0x1' };
@@ -57,7 +57,7 @@ export default abstract class Wallet<TWallet extends ethers.providers.BaseProvid
 			hasWallet: false,
 			correctChain: false,
 			chainId: null,
-			currentAccount: null
+			currentAccount: undefined
 		});
 		this.subscribe = this.state.subscribe; // Class "implements Svelte store" hack!
 	}
@@ -73,7 +73,7 @@ export default abstract class Wallet<TWallet extends ethers.providers.BaseProvid
 			address: string,
 			abi: ethers.ContractInterface,
 			initialState: TState,
-			provider: ethers.providers.BaseProvider | ethers.Signer
+			provider: ethers.providers.Provider | ethers.Signer
 		) => Contract<TContract, TState>,
 		address: string,
 		abi: ethers.ContractInterface,
