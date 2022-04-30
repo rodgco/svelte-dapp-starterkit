@@ -27,11 +27,13 @@ export interface INetwork {
 export default abstract class Wallet<TWallet extends ethers.providers.BaseProvider> implements Readable<IWalletState> {
     protected network: INetwork;
     abstract provider: TWallet;
+    abstract signer: ethers.Signer | undefined;
     protected state: Writable<IWalletState>;
     protected options: IOptions;
     subscribe: (run: Subscriber<IWalletState>, invalidate: (value: IWalletState | undefined) => void) => Unsubscriber;
     constructor(networkName: string, options?: IOptions);
     connect(): void | boolean;
+    abstract changeNetwork(network: INetwork | string | 'default'): void;
     getContract<TContract extends ethers.BaseContract, TState>(contract: new (address: string, abi: ethers.ContractInterface, initialState: TState, provider: ethers.providers.BaseProvider | ethers.Signer) => Contract<TContract, TState>, address: string, abi: ethers.ContractInterface, initialState: TState): Contract<TContract, TState>;
 }
 export {};
