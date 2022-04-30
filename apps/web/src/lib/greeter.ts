@@ -1,19 +1,24 @@
-import Contract from '$lib/contract';
+import { Contract } from 'svelther';
+import type { ISignerOrProvider } from 'svelther';
 
 import type { Greeter } from 'greeter';
 import type { ethers } from 'ethers';
-import abi from 'greeter/abi/Greeter.json';
+// import abi from 'greeter/abi/Greeter.json';
 
-const network = <string>import.meta.env.VITE_NETWORK_NAME;
-const contractAddress = <string>import.meta.env.VITE_CONTRACT_ADDRESS;
+// const contractAddress = <string>import.meta.env.VITE_CONTRACT_ADDRESS;
 
-interface IGreet {
+export interface IGreet {
 	greet: string;
 }
 
-class GreeterContract extends Contract<Greeter, IGreet> {
-	constructor(network: string, address: string, abi: ethers.ContractInterface) {
-		super(network, address, abi, { greet: '' }, { forceChain: true });
+export default class GreeterContract extends Contract<Greeter, IGreet> {
+	constructor(
+		address: string,
+		abi: ethers.ContractInterface,
+		initialState: IGreet,
+		provider: ISignerOrProvider
+	) {
+		super(address, abi, initialState, provider);
 
 		this.contract.on('Greet', (greet: string) =>
 			this.state.update((current) => ({ ...current, greet }))
@@ -27,8 +32,8 @@ class GreeterContract extends Contract<Greeter, IGreet> {
 		return greet;
 	}
 
-	setGreeting(message: string): void {
-		const signer = (<ethers.providers.JsonRpcProvider>this.provider).getSigner();
+	setGreeting(message: string, signer: ethers.Signer): void {
+		signer ||= this.contract.signer;
 		this.contract
 			.connect(signer)
 			.setGreeting(message, {
@@ -39,7 +44,3 @@ class GreeterContract extends Contract<Greeter, IGreet> {
 			});
 	}
 }
-
-const greeter = new GreeterContract(network, contractAddress, abi);
-
-export default greeter;

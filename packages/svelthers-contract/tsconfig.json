@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
+		"target": "es2018",
+		"module": "ESNext",
 		"moduleResolution": "Node",
 		"strict": true,
 		"esModuleInterop": true,
-		"rootDir": "typechain-types",
 		"outDir": "dist",
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"declaration": true
 	},
-	"include": ["./typechain-types/**/*", "./typechain-types/abi/*.json"]
+	"include": ["./src"]
 }

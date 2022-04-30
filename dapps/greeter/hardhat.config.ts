@@ -55,7 +55,7 @@ const config: HardhatUserEtherscanConfig = {
 		apiKey: ETHERSCAN_API_KEY,
 	},
 	abiExporter: {
-		path: "./dist/abi",
+		path: "./typechain-types/abi",
 		runOnCompile: true,
 		clear: true,
 		flat: true,

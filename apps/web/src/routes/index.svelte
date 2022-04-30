@@ -1,17 +1,15 @@
 <script lang="ts">
-	import greeter from '$lib/greeter';
+	import { wallet, greeter } from '$lib/wallet';
 
 	let value: string = '';
 
-	$: if ($greeter.correctChain && $greeter.currentAccount && $greeter.greet === '') {
+	$: if ($wallet.correctChain && $wallet.currentAccount && $greeter.greet === '') {
 		greeter.greet();
 	}
 
-	$: console.log($greeter);
-
 	function setGreeting() {
 		try {
-			greeter.setGreeting(value);
+			greeter.setGreeting(value, wallet.signer);
 			value = '';
 		} catch (error) {
 			console.log('---', error);
@@ -29,13 +27,13 @@
 		</div>
 
 		<div class="greeting">{$greeter.greet}</div>
-		{#if $greeter.currentAccount}
+		{#if $wallet.currentAccount}
 			<form on:submit|preventDefault={setGreeting}>
 				<input type="text" placeholder="message" bind:value />
 				<button type="submit" class="waveButton">Change Greeting!</button>
 			</form>
-		{:else if !$greeter.currentAccount}
-			<button class="waveButton" on:click={() => greeter.connect()}>Connect Wallet</button>
+		{:else if !$wallet.currentAccount}
+			<button class="waveButton" on:click={() => wallet.connect()}>Connect Wallet</button>
 		{:else}
 			<div class="warning">
 				You need a wallet to use this app! Try <a href="https://metamask.io">Metamask</a>.

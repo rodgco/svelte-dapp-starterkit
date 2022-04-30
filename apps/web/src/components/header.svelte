@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import greeter from '$lib/greeter';
+	import { wallet } from '$lib/wallet';
 
 	import Contact from './modals/contact.svelte';
+	import Wrong from './modals/wrong_net.svelte';
+	import { goto } from '$app/navigation';
+	import { browser } from '$app/env';
 
 	let opener: HTMLElement;
+
+	$: if (browser && !$wallet?.correctChain) goto('#wrong');
+	$: console.log('Correct chain?', $wallet.correctChain);
 
 	onMount(() => {
 		document.addEventListener('keydown', (event: KeyboardEvent) => {
@@ -17,17 +23,17 @@
 
 <header id="top">
 	<h1><a href="/">My Dapp</a></h1>
-	{#if !$greeter.hasWallet}
+	{#if !$wallet.hasWallet}
 		<p>You need a Wallet!</p>
-	{:else if !$greeter.currentAccount}
-		<button class="action" on:click={() => greeter.connect()}>Connect Wallet</button>
+	{:else if !$wallet.currentAccount}
+		<button class="action" on:click={() => wallet.connect()}>Connect Wallet</button>
 	{:else}
 		<div class="info">
-			{$greeter.currentAccount.slice(0, 6)}...{$greeter.currentAccount.slice(-4)}
+			{$wallet.currentAccount.slice(0, 6)}...{$wallet.currentAccount.slice(-4)}
 		</div>
-		<div class="info">{$greeter.chainId}</div>
-		{#if !$greeter.correctChain}
-			<button class="action" on:click={() => greeter.changeNetwork()}>Change to Polygon</button>
+		<div class="info">{$wallet.chainId}</div>
+		{#if !$wallet.correctChain}
+			<button class="action" on:click={() => wallet.changeNetwork()}>Change to Polygon</button>
 		{/if}
 	{/if}
 	<button type="button" id="mainMenuOpen" hidden bind:this={opener} />
@@ -41,6 +47,7 @@
 </header>
 
 <Contact />
+<Wrong />
 
 <style>
 	header {
