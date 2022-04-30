@@ -66,6 +66,8 @@ export default abstract class Wallet<TWallet extends ethers.providers.BaseProvid
 		return true;
 	}
 
+	abstract changeNetwork(network: INetwork | string | 'default'): void;
+
 	getContract<TContract extends ethers.BaseContract, TState>(
 		contract: new (
 			address: string,
