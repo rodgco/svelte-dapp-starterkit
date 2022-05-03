@@ -11,6 +11,7 @@
 
 	$: wrongModal = browser && !$wallet?.correctChain;
 	$: console.log('Correct chain?', $wallet.correctChain);
+	$: console.log('Current Account', $wallet.currentAccount);
 
 	onMount(() => {
 		document.addEventListener('keydown', (event: KeyboardEvent) => {

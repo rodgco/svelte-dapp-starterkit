@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { wallet, greeter } from '$lib/wallet';
 
-	let value: string = '';
+	export let greet: string = '';
+	let value = '';
 
 	$: if ($wallet.correctChain && $wallet.currentAccount && $greeter.greet === '') {
 		greeter.greet();
@@ -26,7 +27,7 @@
 			pretty cool right? Connect your Ethereum wallet and greet!
 		</div>
 
-		<div class="greeting">{$greeter.greet}</div>
+		<div class="greeting">{$greeter.greet || greet}</div>
 		{#if $wallet.currentAccount}
 			<form on:submit|preventDefault={setGreeting}>
 				<input type="text" placeholder="message" bind:value />
