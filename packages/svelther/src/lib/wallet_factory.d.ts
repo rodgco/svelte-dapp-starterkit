@@ -3,7 +3,8 @@ import type Wallet from './wallet';
 import type { ethers } from 'ethers';
 export declare enum WALLET_TYPE {
     JSONRPC = 0,
-    METAMASK = 1
+    METAMASK = 1,
+    WALLETCONNECT = 2
 }
 export default class WalletFactory {
     static createWallet(type: WALLET_TYPE, networkName: string, options?: IOptions): Wallet<ethers.providers.BaseProvider>;

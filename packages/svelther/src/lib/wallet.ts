@@ -8,6 +8,7 @@ import networks from './networks.json';
 
 interface IWalletState {
 	hasWallet: boolean;
+	connected: boolean;
 	correctChain: boolean;
 	chainId: null | string;
 	currentAccount: string | undefined;
@@ -21,17 +22,17 @@ export interface IOptions {
 
 export interface INetwork {
 	chainId: string;
-	blockExplorerUrls?: string[];
-	chainName?: string;
+	blockExplorerUrls: string[];
+	chainName: string;
 	iconUrls?: string[];
-	nativeCurrency?: { name: string; symbol: string; decimals: number };
-	rpcUrls?: string[];
+	nativeCurrency: { name: string; symbol: string; decimals: number };
+	rpcUrls: string[];
 }
 
 export default abstract class Wallet<TWallet extends ethers.providers.Provider>
 	implements Readable<IWalletState>
 {
-	protected network: INetwork = { chainId: '0x1' };
+	protected network: INetwork = networks[0];
 	public abstract provider: TWallet;
 	public abstract signer: ethers.Signer | undefined;
 
@@ -55,6 +56,7 @@ export default abstract class Wallet<TWallet extends ethers.providers.Provider>
 
 		this.state = writable({
 			hasWallet: false,
+			connected: false,
 			correctChain: false,
 			chainId: null,
 			currentAccount: undefined
@@ -62,7 +64,7 @@ export default abstract class Wallet<TWallet extends ethers.providers.Provider>
 		this.subscribe = this.state.subscribe; // Class "implements Svelte store" hack!
 	}
 
-	connect(): void | boolean {
+	connect(): Promise<void> | Promise<boolean> | void | boolean {
 		return true;
 	}
 

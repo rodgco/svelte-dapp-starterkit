@@ -19,6 +19,7 @@ export default class JsonRpcWallet extends Wallet<ethers.providers.JsonRpcProvid
 
 		this.state.update((current) => ({
 			...current,
+			connected: true,
 			chainId: this.network.chainId,
 			correctChain: true
 		}));

@@ -126,3 +126,7 @@ main > section {
 main h2 {
 	font-size: 2em;
 }
+.walletconnect-connect__button__icon,
+.walletconnect-modal__headerLogo {
+	flex: 0 0 auto;
+}

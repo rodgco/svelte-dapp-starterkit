@@ -8,7 +8,11 @@ import { browser } from '$app/env';
 const contractAddress = <string>import.meta.env.VITE_CONTRACT_ADDRESS;
 const networkName = <string>import.meta.env.VITE_NETWORK_NAME;
 
-const type = browser && window.ethereum ? WALLET_TYPE.METAMASK : WALLET_TYPE.JSONRPC;
+const type = browser
+	? window.ethereum
+		? WALLET_TYPE.METAMASK
+		: WALLET_TYPE.WALLETCONNECT
+	: WALLET_TYPE.JSONRPC;
 const wallet = WalletFactory.createWallet(type, networkName);
 
 const greeter = new GreeterContract(
@@ -20,4 +24,5 @@ const greeter = new GreeterContract(
 	wallet.provider
 );
 
+console.log(wallet);
 export { wallet, greeter };

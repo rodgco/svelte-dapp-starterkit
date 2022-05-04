@@ -7,6 +7,7 @@
 	$: if ($wallet.correctChain && $wallet.currentAccount && $greeter.greet === '') {
 		greeter.greet();
 	}
+	$: console.log('Wallet state', $wallet.chainId);
 
 	function setGreeting() {
 		try {

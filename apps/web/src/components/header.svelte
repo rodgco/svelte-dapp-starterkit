@@ -9,9 +9,7 @@
 	let opener: HTMLElement;
 	let wrongModal = false;
 
-	$: wrongModal = browser && !$wallet?.correctChain;
-	$: console.log('Correct chain?', $wallet.correctChain);
-	$: console.log('Current Account', $wallet.currentAccount);
+	$: wrongModal = browser && wallet.connected && !$wallet?.correctChain;
 
 	onMount(() => {
 		document.addEventListener('keydown', (event: KeyboardEvent) => {

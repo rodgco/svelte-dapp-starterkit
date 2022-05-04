@@ -3,6 +3,7 @@ import type { ethers } from 'ethers';
 import type Contract from './contract';
 interface IWalletState {
     hasWallet: boolean;
+    connected: boolean;
     correctChain: boolean;
     chainId: null | string;
     currentAccount: string | undefined;
@@ -14,15 +15,15 @@ export interface IOptions {
 }
 export interface INetwork {
     chainId: string;
-    blockExplorerUrls?: string[];
-    chainName?: string;
+    blockExplorerUrls: string[];
+    chainName: string;
     iconUrls?: string[];
-    nativeCurrency?: {
+    nativeCurrency: {
         name: string;
         symbol: string;
         decimals: number;
     };
-    rpcUrls?: string[];
+    rpcUrls: string[];
 }
 export default abstract class Wallet<TWallet extends ethers.providers.Provider> implements Readable<IWalletState> {
     protected network: INetwork;
@@ -32,7 +33,7 @@ export default abstract class Wallet<TWallet extends ethers.providers.Provider> 
     protected options: IOptions;
     subscribe: (run: Subscriber<IWalletState>, invalidate: (value: IWalletState | undefined) => void) => Unsubscriber;
     constructor(networkName: string, options?: IOptions);
-    connect(): void | boolean;
+    connect(): Promise<void> | Promise<boolean> | void | boolean;
     abstract changeNetwork(network: INetwork | string | 'default'): void;
     getContract<TContract extends ethers.BaseContract, TState>(contract: new (address: string, abi: ethers.ContractInterface, initialState: TState, provider: ethers.providers.Provider | ethers.Signer) => Contract<TContract, TState>, address: string, abi: ethers.ContractInterface, initialState: TState): Contract<TContract, TState>;
 }

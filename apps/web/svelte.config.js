@@ -1,5 +1,6 @@
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-auto';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
 import path from 'path';
 
@@ -20,9 +21,22 @@ const config = {
 			},
 			define: {
 				global: JSON.stringify({})
+			},
+			optimizeDeps: {
+				esbuildOptions: {
+					// Node.js global to browser globalThis
+					define: {
+						global: 'globalThis'
+					},
+					// Enable esbuild polyfill plugins
+					plugins: [
+						NodeGlobalsPolyfillPlugin({
+							buffer: true
+						})
+					]
+				}
 			}
 		}
 	}
 };
-
 export default config;
